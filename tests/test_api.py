@@ -73,6 +73,14 @@ def test_summary(client):
     assert summary["by_category"]["food"] == 1250.5
 
 
+def test_summary_categories_sorted_by_amount(client):
+    post_expense(client, amount=100, category="food")
+    post_expense(client, amount=900, category="transport")
+    post_expense(client, amount=500, category="health")
+    summary = client.get("/api/summary").json
+    assert list(summary["by_category"]) == ["transport", "health", "food"]
+
+
 def test_form_add_and_delete(client, store):
     response = client.post(
         "/expenses/add",

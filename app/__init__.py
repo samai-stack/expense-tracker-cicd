@@ -18,6 +18,8 @@ def create_app(config: dict | None = None) -> Flask:
     )
     if config:
         app.config.update(config)
+    # сохраняем порядок ключей: категории в сводке отсортированы по сумме
+    app.json.sort_keys = False
 
     app.extensions["store"] = ExpenseStore(app.config["DATABASE"])
 
